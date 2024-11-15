@@ -55,6 +55,12 @@ body {
   box-shadow: brown 0px 5px;
 }
 
+.playerButtons:active {
+    background-color: rgb(153, 81, 14);
+    box-shadow: 0 1px brown;
+    transform: translateY(4px);
+}
+
 .buttons:active {
     background-color: rgb(153, 81, 14);
     box-shadow: 0 1px brown;

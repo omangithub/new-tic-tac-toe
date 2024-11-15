@@ -1,6 +1,7 @@
 // an array for the gameboard. Build a board.
 
 const game = (function () {
+
   let gameArrayVar = ["","","","","","","","",""];
 
   const ticGameboard=document.getElementById("gameboard");
@@ -47,7 +48,6 @@ game.renderBoard();
 
 // activate player turns
 
-
 const playerTurn = (function () {
   let announceText = document.getElementById("announcer");
   let boxNumber=1;  
@@ -59,14 +59,14 @@ const playerTurn = (function () {
     if(whoseTurn===1 && board[boxNumber]==="") {
 
       game.updateBoard(boxNumber,"X");
-      announceText.innerText="Player Two's turn"
+      announceText.innerText=`${changePlayerNames.playerMakingMove()}'s turn`
       testWinner();
       if(whoseTurn!==3){
       whoseTurn=2;
       }
     }else if(whoseTurn===2 && board[boxNumber]==="") {
       game.updateBoard(boxNumber,"O"); 
-      announceText.innerText="Player One's turn"
+      announceText.innerText=`${changePlayerNames.playerMakingMove()}'s turn`
       testWinner();
       if(whoseTurn!==3){
       whoseTurn=1;
@@ -126,7 +126,6 @@ const beginGame = (function () {
     const startButton = document.getElementById("startBut");
     let announceText = document.getElementById("announcer");
     let board=game.getBoard();
-    console.log(board);
 
     const beginNewGame = (function () {
 
@@ -168,15 +167,61 @@ function testWinner () {
 
   if (gameEnd!==3) {
   if (boxes[0]==="X" && boxes[1]==="X" && boxes[2]==="X" || boxes[3]==="X" && boxes[4]==="X" && boxes[5]==="X" || boxes[6]==="X" && boxes[7]==="X" && boxes[8]==="X" || boxes[0]==="O" && boxes[1]==="O" && boxes[2]==="O" || boxes[3]==="O" && boxes[4]==="O" && boxes[5]==="O" || boxes[6]==="O" && boxes[7]==="O" && boxes [8]==="O") {
-  announceText.innerText=`That's three in a row.\nPlayer ${playerTurn.getTurn()} is Champion!`
+  announceText.innerText=`That's three in a row.\n${changePlayerNames.playerMakingMove()} is Champion!`
   playerTurn.winnerAnounced();
   } else if (boxes[0]==="X" && boxes[3]==="X" && boxes[6]==="X" || boxes[1]==="X" && boxes[4]==="X" && boxes[7]==="X" || boxes[2]==="X" && boxes[5]==="X" && boxes [8]==="X" || boxes[0]==="O" && boxes[3]==="O" && boxes[6]==="O" || boxes[1]==="O" && boxes[4]==="O" && boxes[7]==="O" || boxes[2]==="O" && boxes[5]==="O" && boxes [8]==="O") {
-  announceText.innerText=`That's a column of three.\nPlayer ${playerTurn.getTurn()} is Champion!`
+  announceText.innerText=`That's a column of three.\n${changePlayerNames.playerMakingMove()} is Champion!`
   playerTurn.winnerAnounced();
   } else if (boxes[0]==="X" && boxes[4]==="X" && boxes[8]==="X" || boxes[2]==="X" && boxes[4]==="X" && boxes[6]==="X" || boxes[0]==="O" && boxes[4]==="O" && boxes[8]==="O" || boxes[2]==="O" && boxes[4]==="O" && boxes[6]==="O") {
-  announceText.innerText=`That's three diagnoally.\nPlayer ${playerTurn.getTurn()} is Champion!`
+  announceText.innerText=`That's three diagnoally.\n${changePlayerNames.playerMakingMove()} is Champion!`
   playerTurn.winnerAnounced();
 
   }}
 
 };
+
+const changePlayerNames = (function() {
+  let announceText = document.getElementById("announcer");
+  let playerOneButton = document.getElementById("buttonPlayer1");
+  let playerTwoButton = document.getElementById("buttonPlayer2");
+  let player1Text=document.getElementById("player1");
+  let player2Text=document.getElementById("player2");
+  let playerOneName = "Player One";
+  let playerTwoName = "Player Two"
+  let turn = playerTurn.getTurn();
+
+  const playerMakingMove = (function () {
+    if (turn===1){
+      return playerOneName;
+    } else if (turn===2) {
+      return playerTwoName;
+    }
+  })
+
+  const changePl1Name = (function() {
+    playerOneName = window.prompt("Please enter your desired name for player 1", "Player One");
+    if (playerOneName.length<15) {
+      player1Text.innerText=playerOneName;
+      announceText.innerText=`Player One has chosen the name "${playerOneName}".`
+    }else{
+      announceText.innerText="Player One chose a name that is too long."
+    }
+  })
+
+  const changePl2Name = (function() {
+    playerTwoName = window.prompt("Please enter your desired name for player 1", "Player Two");
+    if (playerTwoName.length<15) {
+      player2Text.innerText=playerTwoName;
+      announceText.innerText=`Player Two has chosen the name "${playerTwoName}".`
+    }else{
+      announceText.innerText="Player Two chose a name that is too long."
+    }
+  })
+
+  playerOneButton.addEventListener("click", changePl1Name);
+  playerTwoButton.addEventListener("click", changePl2Name);
+
+  return {
+    playerMakingMove
+  }
+})();
